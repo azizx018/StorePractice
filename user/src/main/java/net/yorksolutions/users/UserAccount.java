@@ -14,4 +14,6 @@ public class UserAccount {
 
     String username;
     String password;
+
+    Boolean isAdmid;
 }
