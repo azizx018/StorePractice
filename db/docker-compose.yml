@@ -1,0 +1,13 @@
+version: '3'
+
+services: # list of containers (pretend computer)
+  Storedb:
+    image: 'postgres:latest'
+    ports:
+      - 5432:5432
+    environment: # Global variables to an entire computer
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: default
+    volumes: # persists data between restarts
+      - ./db-data/:/var/lib/postgresql/data/
