@@ -12,5 +12,10 @@ public interface UserAccountRepository extends CrudRepository<UserAccount, Long>
 
     Optional<UserAccount> findByUsername(String username);
 
-    Optional<UserAccount> findByisAdmin(Boolean isAdmin);
+    Boolean isOwner(Long userId);
+
+    Iterable<UserAccount> findAll(String username);
+
+    //void delete();
+    //Optional<UserAccount> deleteUserAccountById(Long userId);
 }

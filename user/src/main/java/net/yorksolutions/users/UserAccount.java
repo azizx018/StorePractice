@@ -13,26 +13,26 @@ public class UserAccount {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
      Long id;
 
-    final private String username;
+    final public String username;
     final private String password;
-    final private Boolean isAdmin;
+    final private Boolean isOwner;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserAccount that = (UserAccount) o;
-        return username.equals(that.username) && password.equals(that.password) && isAdmin.equals(that.isAdmin);
+        return username.equals(that.username) && password.equals(that.password) && isOwner.equals(that.isOwner);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, password, isAdmin);
+        return Objects.hash(username, password, isOwner);
     }
 
     public UserAccount(String username, String password, Boolean isAdmin){
 
-        this.isAdmin = isAdmin;
+        this.isOwner = isAdmin;
         this.username = username;
         this.password = password;
 
@@ -41,7 +41,7 @@ public class UserAccount {
     public UserAccount() {
          username = null;
          password = null;
-         isAdmin = null;
+         isOwner = null;
 
     }
 //
