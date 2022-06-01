@@ -32,22 +32,38 @@ public class AuthorizationService {
     public UUID login(String username, String password) {
         Optional<UserAccount> result = repository.findByUsernameAndPassword(username, password);
 
-        if (result.isEmpty())
+        if (result.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
         final UUID token = UUID.randomUUID();
-        tokenMap.put(token, result.get().id);
+        var user = result.get();
+        tokenMap.put(token, user.id);
         return token;
 
     }
 
     public void logout(UUID token) {
-        if (tokenMap.containsKey(token))
+        if (tokenMap.containsKey(token)) {
             tokenMap.remove(token);
+        }
     }
     public void registerCustomer(String username, String password) {
         if (repository.findByUsername(username).isPresent())
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         repository.save(new UserAccount(username, password, false));
+    }
+    public void registerOwner(String username, String password) {
+        if (repository.findByUsername(username).isPresent())
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        repository.save(new UserAccount(username, password, true));
+    }
+
+    public void isAuthorized (UUID token) {
+        if (tokenMap.containsKey(token)) {
+            return;
+        }
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+
     }
 
 

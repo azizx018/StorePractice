@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,6 +26,7 @@ import static org.mockito.Mockito.*;
 public class AuthorizationServiceTests {
 
     @InjectMocks
+
     AuthorizationService service;
 
     @Mock
@@ -59,13 +61,13 @@ public class AuthorizationServiceTests {
 
     }
     @Test
-    void itShouldMapTheUUIDToIdWhenLoginSuccess() {
-        final String username = "bad username";
+    void itShouldMapTheUUIDToIDWhenLoginSuccess() {
+        final String username = "good username";
         final String password = "good password";
         final Long id = 0L;
         UserAccount expected = new UserAccount(username, password, false);
         expected.setId(id);
-        when(repository.findByUsernameAndPassword(eq(username), not(eq(password))))
+        when(repository.findByUsernameAndPassword(username, password))
                 .thenReturn(Optional.of(expected));
         ArgumentCaptor<UUID> captor = ArgumentCaptor.forClass(UUID.class);
         when(tokenMap.put(captor.capture(), eq(id))).thenReturn(id);
@@ -77,11 +79,17 @@ public class AuthorizationServiceTests {
     //Logout Tests
     @Test
     void itShouldRemoveUUIDTokenFromTokenMapWhenLogoutAndTokenIsInTokenMap() {
+        HashMap<UUID, Long> tokenMap = new HashMap<>();
         final UUID token = UUID.randomUUID();
-        when(tokenMap.containsKey(token)).thenReturn(false);
-        when(tokenMap.remove(token)).thenReturn(0L);
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->service.logout(token));
-        assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatus());
+        final Long id = (long) (Math.random() * 9999999);
+        tokenMap.put(token, id);
+
+        final AuthorizationService authorizationService = new AuthorizationService(repository, tokenMap);
+        //user is logged in
+        assertEquals(true, tokenMap.containsKey(token));
+        authorizationService.logout(token);
+        assertEquals(false, tokenMap.containsKey(token));
+
 
     }
 
@@ -102,6 +110,19 @@ public class AuthorizationServiceTests {
         service.registerCustomer(username, password);
         assertEquals(expected, captor.getValue());
     }
+    @Test
+    void itShouldSaveNewOwnerAccountWhenRegisterIsCalledAndUsernameIsUnique() {
+        final String username = "some username";
+        final String password = "some password";
+
+        final UserAccount expected = new UserAccount(username, password, true);
+        ArgumentCaptor<UserAccount> captor = ArgumentCaptor.forClass(UserAccount.class);
+        when(repository.save(captor.capture())).thenReturn(new UserAccount());
+
+        when(repository.findByUsername(username)).thenReturn(Optional.empty());
+        service.registerOwner(username, password);
+        assertEquals(expected, captor.getValue());
+    }
 
     @Test
     void itShouldThrowConflictIfUsernameExists() {
@@ -113,14 +134,19 @@ public class AuthorizationServiceTests {
     }
 
     @Test
-    void itShouldSaveANewUserAccountWhenUserIsUnique() {
-
-    }
-    @Test
     void itShouldThrowUnauthorizedWhenTokenIsBad() {
+        final UUID token  = UUID.randomUUID();
+        when(tokenMap.containsKey(token)).thenReturn(false);
+        final ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->service.isAuthorized(token));
+        assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatus());
 
     }
     @Test
-    void itShouldThrowOkWhenTokenIsGood() {}
+    void itShouldNotThrowWhenTokenIsGood() {
+        final UUID token = UUID.randomUUID();
+        when(tokenMap.containsKey(token)).thenReturn(true);
+        assertDoesNotThrow(()-> service.isAuthorized(token));
+
+    }
 
 }

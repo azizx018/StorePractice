@@ -31,6 +31,7 @@ public class UserAccount {
     }
 
     public UserAccount(String username, String password, Boolean isAdmin){
+
         this.isAdmin = isAdmin;
         this.username = username;
         this.password = password;
@@ -38,15 +39,16 @@ public class UserAccount {
     }
 
     public UserAccount() {
-         username =null;
-         password =null;
+         username = null;
+         password = null;
          isAdmin = null;
-        
-    }
 
+    }
+//
 //    public Long getId() {
 //        return id;
 //    }
     public void setId(Long id) {
+        this.id = id;
     }
 }
