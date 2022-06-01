@@ -23,6 +23,23 @@ public class AuthorizationController {
     public void isAuthorized(@RequestParam UUID token) {
         service.isAuthorized(token);
     }
+    @GetMapping("/login")
+    public UUID login(@RequestParam String username, @RequestParam String password) {
+        return service.login(username,password);
+    }
+
+    @GetMapping("/registerOwner")
+    public void registerOwner(@RequestParam String username, @RequestParam String password) {
+        service.registerOwner(username, password);
+    }
+    @GetMapping("/registerCustomer")
+    public void registerCustomer(@RequestParam String username, @RequestParam String password) {
+        service.registerCustomer(username, password);
+    }
+    @GetMapping("/logout")
+    public void logout(@RequestParam UUID token) {
+        service.logout(token);
+    }
 
 
 
