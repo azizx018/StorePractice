@@ -11,4 +11,6 @@ public interface UserAccountRepository extends CrudRepository<UserAccount, Long>
     Optional<UserAccount> findByUsernameAndPassword(String username, String password);
 
     Optional<UserAccount> findByUsername(String username);
+
+    Optional<UserAccount> findByisAdmin(Boolean isAdmin);
 }
