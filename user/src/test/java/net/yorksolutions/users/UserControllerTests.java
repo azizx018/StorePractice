@@ -42,8 +42,8 @@ public class UserControllerTests {
         final UUID requestingUserToken = UUID.randomUUID();
         String url = "http://localhost:" + port + "/viewAllUsers?requestingUserToken=" + requestingUserToken;
         //doNothing().when(service).viewAllUsers(testId);
-        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED))
-                .when(service).viewAllUsers(requestingUserToken);
+//        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED))
+//                .when(service).viewAllUsers();
         final ResponseEntity<Void> response = rest.getForEntity(url,Void.class);
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
@@ -53,7 +53,7 @@ public class UserControllerTests {
         final UUID requestingUserToken = UUID.randomUUID();
         String url = "http://localhost:" + port + "/viewAllUsers?requestingUserToken=" + requestingUserToken;
         doThrow(new ResponseStatusException(HttpStatus.OK))
-                .when(service).viewAllUsers(requestingUserToken);
+                .when(service).viewAllUsers();
         final ResponseEntity<Void> response = rest.getForEntity(url,Void.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
@@ -72,8 +72,8 @@ public class UserControllerTests {
 //        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED))
 //          .when(service).ownerCheck(requestingUserToken);
 
-        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED))
-                .when(service).deleteUser(requestingUserToken, idToBeDeleted);
+//        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED))
+//                .when(service).deleteUser(idToBeDeleted);
         final ResponseEntity<Void> response = rest.getForEntity(url,Void.class);
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
 
@@ -93,7 +93,7 @@ public class UserControllerTests {
 //          .when(service).ownerCheck(requestingUserToken);
 
         doThrow(new ResponseStatusException(HttpStatus.OK))
-                .when(service).deleteUser(requestingUserToken, idToBeDeleted);
+                .when(service).deleteUser(idToBeDeleted);
         final ResponseEntity<Void> response = rest.getForEntity(url,Void.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
 

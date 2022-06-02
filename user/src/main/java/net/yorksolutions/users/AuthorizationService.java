@@ -63,8 +63,17 @@ public class AuthorizationService {
             return;
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-
     }
 
+    public Long getUserIdFromUuid (UUID token) {
+        if (tokenMap.containsKey(token)) {
+            return tokenMap.get(token);
+        }
+        return -1L;
+    }
 
+//    if (tokenMap.containsKey(token)) {
+//        Long id = tokenMap.get(token);
+//        mightBeUser = repository.findById(id);
+//    }
 }

@@ -12,8 +12,9 @@ public interface UserAccountRepository extends CrudRepository<UserAccount, Long>
     Optional<UserAccount> findByUsernameAndPassword(String username, String password);
 
     Optional<UserAccount> findByUsername(String username);
+    //Boolean isOwner (UUID);
 
-    Boolean isOwner(UUID userToken);
+    Optional<UserAccount> findByIdAndIsOwner(Long id, boolean isOwner);
 
     //Iterable<UserAccount> findAll(String username);
 

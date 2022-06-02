@@ -13,7 +13,7 @@ public class UserAccount {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
      Long id;
 
-    final public String username;
+    public String username;
     final private String password;
     final private Boolean isOwner;
 
@@ -30,9 +30,9 @@ public class UserAccount {
         return Objects.hash(username, password, isOwner);
     }
 
-    public UserAccount(String username, String password, Boolean isAdmin){
+    public UserAccount(String username, String password, Boolean isOwner){
 
-        this.isOwner = isAdmin;
+        this.isOwner = isOwner;
         this.username = username;
         this.password = password;
 
