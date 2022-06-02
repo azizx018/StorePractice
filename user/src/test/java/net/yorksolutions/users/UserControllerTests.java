@@ -80,6 +80,22 @@ public class UserControllerTests {
     }
     @Test
     void ifShouldRespondOkWhenOwnerDeletesUser() {
+        TestRestTemplate rest = new TestRestTemplate();
+        final UUID requestingUserToken = UUID.randomUUID();
+        final Long idToBeDeleted = 2L;
+        String url = "http://localhost:" + port +
+                "/deleteUser?requestingUserToken=" + requestingUserToken +
+                "&idToBeDeleted=" + idToBeDeleted;
+        //doNothing().when(service).deleteUser(requestingUserToken,idToBeDeleted);
+        //when(service.ownerCheck(requestingUserToken));
+
+//        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED))
+//          .when(service).ownerCheck(requestingUserToken);
+
+        doThrow(new ResponseStatusException(HttpStatus.OK))
+                .when(service).deleteUser(requestingUserToken, idToBeDeleted);
+        final ResponseEntity<Void> response = rest.getForEntity(url,Void.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
     }
 
