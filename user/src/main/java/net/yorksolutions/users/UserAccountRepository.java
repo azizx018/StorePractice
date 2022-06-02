@@ -4,6 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface UserAccountRepository extends CrudRepository<UserAccount, Long> {
@@ -12,10 +13,8 @@ public interface UserAccountRepository extends CrudRepository<UserAccount, Long>
 
     Optional<UserAccount> findByUsername(String username);
 
-    Boolean isOwner(Long userId);
+    Boolean isOwner(UUID userToken);
 
-    Iterable<UserAccount> findAll(String username);
+    //Iterable<UserAccount> findAll(String username);
 
-    //void delete();
-    //Optional<UserAccount> deleteUserAccountById(Long userId);
 }

@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
-
+import java.util.UUID;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,42 +29,38 @@ public class UserServiceTests {
     @Mock
     UserAccountRepository repository;
 
-    private UserAccount user1 = new UserAccount("user1", "password1", false);
-    private UserAccount user2 = new UserAccount("user2", "password2", false);
-    private UserAccount admin1 = new UserAccount("admin1", "password3", true);
+    private final UUID requestingUserToken = UUID.randomUUID();
 
     @Test
     void itShouldNotThrowWhenAnOwnerRequestsUsers() {
-        final Long id = 0L;
-        when(repository.isOwner(id)).thenReturn(true);
-        assertDoesNotThrow(() ->service.viewAllUsers(id));
+        when(repository.isOwner(requestingUserToken)).thenReturn(true);
+        assertDoesNotThrow(() ->service.viewAllUsers(requestingUserToken));
 
     }
     @Test
     void itShouldThrowWhenANonOwnerRequestsUsers() {
-        final Long id = 0L;
-        when(repository.isOwner(id)).thenReturn(false);
-        final ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->service.viewAllUsers(id));
+        when(repository.isOwner(requestingUserToken)).thenReturn(false);
+        final ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () ->service.viewAllUsers(requestingUserToken));
         assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatus());
     }
 
     @Test
     void itShouldThrowUnAuthWhenNonOwnerRequestsDelete() {
-        when(repository.isOwner(user1.id)).thenReturn(false);
+
+        when(repository.isOwner(requestingUserToken)).thenReturn(false);
 
         final ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                ()->service.deleteUser(user1.id, user2.id));
+                ()->service.deleteUser(requestingUserToken, 5L));
 
         assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatus());
     }
     @Test
     void itShouldDeleteUserWhenOwnerRequestsDelete() {
-        final Long id = 0L;
-        final Long id2 = 1L;
-        doNothing().when(service).ownerCheck(id);
-        service.deleteUser(id,id2);
-        verify(repository).deleteById(id2);
-
+        final Long idToBeDeleted = 1L;
+        doNothing().when(service).ownerCheck(requestingUserToken);
+        service.deleteUser(requestingUserToken,idToBeDeleted);
+        verify(repository).deleteById(idToBeDeleted);
     }
 }
 

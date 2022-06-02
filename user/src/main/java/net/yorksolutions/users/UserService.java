@@ -6,12 +6,13 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashMap;
-import java.util.Optional;
 import java.util.UUID;
+
 
 @Service
 public class UserService {
+
+
 
     private UserAccountRepository repository;
 
@@ -22,21 +23,24 @@ public class UserService {
     }
 
 
-    public Iterable<UserAccount> viewAllUsers(Long requestingUserId) {
-        ownerCheck(requestingUserId);
+    public Iterable<UserAccount> viewAllUsers(UUID requestingUserToken) {
+        ownerCheck(requestingUserToken);
         return repository.findAll();
     }
-    public void deleteUser(Long requestingUserId, Long idToBeDeleted) {
-        ownerCheck(requestingUserId);
+    public void deleteUser(UUID requestingUserToken, Long idToBeDeleted) {
+        ownerCheck(requestingUserToken);
         repository.deleteById(idToBeDeleted);
     }
 
-     void ownerCheck(Long requestingUserId) {
-        var isOwner = repository.isOwner(requestingUserId);
+     void ownerCheck(UUID requestingUserToken) {
+        var isOwner = repository.isOwner(requestingUserToken);
 
         if (isOwner.equals(false)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
+    }
+    public void setRepository(UserAccountRepository repository) {
+        this.repository = repository;
     }
 
 }
