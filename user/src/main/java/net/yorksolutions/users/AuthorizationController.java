@@ -23,6 +23,7 @@ public class AuthorizationController {
         service.isAuthorized(token);
     }
 
+    @CrossOrigin
     @GetMapping("/login")
     public UUID login(@RequestParam String username, @RequestParam String password) {
         return service.login(username,password);
