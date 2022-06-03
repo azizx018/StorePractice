@@ -1,7 +1,7 @@
 import {render, screen} from "@testing-library/react";
 import Login from "./Login";
 import userEvent from "@testing-library/user-event";
-import {LOGIN_START, UPDATE_CREDENTIALS} from "../modules/user";
+import {initiateLogin, LOGIN_START, UPDATE_CREDENTIALS} from "../modules/user";
 
 
 it('should show username and password field', () => {
@@ -34,11 +34,11 @@ it('should update the password when user types in password field', ()=>{
 
 })
 
-it('should dispatch LOGIN_START when user clicks login', () => {
+it('should dispatch initiateLogin when user clicks login', () => {
     const dispatch = jest.fn()
     render(<Login _useSelector={()=>{}} _useDispatch={() => dispatch}/>)
     userEvent.click(screen.getByText('Login'))
-    expect(dispatch).toHaveBeenCalledWith({type:LOGIN_START})
+    expect(typeof dispatch.mock.calls[0][0]).toBe('function')
 })
 
 it('should enable the login button when loging not pending', () => {
