@@ -32,6 +32,7 @@ public class UserServiceTests {
     UserAccount userAccount = new UserAccount("user", "password", false);
 
     private final Long requestingUserId = 0L;
+
     @Test
     void itShouldNotThrowWhenAnOwnerRequestsUsers() {
         when(repository.findById(requestingUserId)).thenReturn(Optional.of(ownerAccount));
