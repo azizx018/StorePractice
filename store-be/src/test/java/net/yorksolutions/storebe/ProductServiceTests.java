@@ -15,8 +15,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceTests {
@@ -68,6 +67,7 @@ public class ProductServiceTests {
         final ArrayList<ProductAccount> allProductList = new ArrayList<>();
         allProductList.add(product1);
         allProductList.add(product2);
+        doNothing().when(productService).checkAuthorized(token);
         when(productAccountRepository.findAll()).thenReturn(allProductList);
         final Iterable <ProductAccount> allProducts = productService.viewAllProducts(token);
         assertEquals(allProductList, allProducts);

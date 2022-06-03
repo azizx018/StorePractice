@@ -15,7 +15,6 @@ public class ProductController {
 
     @GetMapping("/viewAllProducts")
     Iterable<ProductAccount> viewAllProducts (@RequestParam UUID requestingUserToken) {
-       // authorizationService.isAuthorized(requestingUserToken);
         return productService.viewAllProducts(requestingUserToken);
 
     }
