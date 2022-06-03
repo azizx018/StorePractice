@@ -13,10 +13,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -42,8 +45,13 @@ public class ProductControllerTests {
         TestRestTemplate rest = new TestRestTemplate();
         final UUID requestingUserToken = UUID.randomUUID();
         String url = "http://localhost:" + port + "/viewAllProducts?requestingUserToken=" + requestingUserToken;
-        doThrow(new ResponseStatusException(HttpStatus.OK)).when(productService).viewAllProducts(requestingUserToken);
-        final ResponseEntity<Void> response = rest.getForEntity(url, Void.class);
+        ProductAccount [] expected = new ProductAccount []{};
+        //doThrow(new ResponseStatusException(HttpStatus.OK)).when(productService).viewAllProducts(requestingUserToken);
+        when(productService.viewAllProducts(requestingUserToken)).thenReturn(List.of(expected));
+        final ResponseEntity<ProductAccount[]> response = rest.getForEntity(url, ProductAccount[].class);
+        //final ResponseEntity<Void> response = rest.getForEntity(url, Void.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(List.of(expected).equals(List.of(response.getBody())));
     }
+
 }
