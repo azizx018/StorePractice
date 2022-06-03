@@ -9,8 +9,9 @@ export const LOGOUT ='store/user/LOGOUT'
 //initial state
 
 const initialState= {
-    isLoggedIn:false,
+    token:null,
     loginPending:false,
+    registerPending:false,
     credentials:{username:'', password:''},
 
 }
@@ -21,7 +22,8 @@ export default function reducer(state=initialState, action) {
             return {
                 ...state,
                 isLoggedIn: false,
-                credentials: {username:'', password: ''}
+                credentials: {username:'', password: ''},
+                token: null
             }
         case UPDATE_CREDENTIALS:
             return {
@@ -41,8 +43,8 @@ export default function reducer(state=initialState, action) {
         case LOGIN_SUCCESS:
             return {
                 ...state,
-                isLoggedIn: true,
-                loginPending: false
+                loginPending: false,
+                token: action.payload
             }
         default:
             return{...state}
@@ -60,8 +62,13 @@ export function initiateLogin(_fetch=fetch) {
         const response = await _fetch(url)
 
         if (response.ok){
-            dispatch({type:LOGIN_SUCCESS})
+            const token = await response.json()
+            dispatch({type:LOGIN_SUCCESS, payload: token})
         } else
             dispatch({type:LOGIN_FAILURE})
     }
+}
+
+export function initiateRegister() {
+
 }

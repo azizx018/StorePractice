@@ -3,7 +3,7 @@ import App from './App';
 
 test('it should show the login component when not logged in', () => {
   const state = {
-    isLoggedIn:false
+    token:null
   }
   const expectedText = "expextedText"
   const mock = () => <>{expectedText}</>
@@ -15,7 +15,7 @@ test('it should show the login component when not logged in', () => {
 
 test('it should not show the login component when logged in', () => {
   const state = {
-    isLoggedIn:true
+    token:'some token'
   }
   const expectedText = "expextedText"
   const mock = () => <>{expectedText}</>

@@ -4,9 +4,9 @@ import {useSelector} from "react-redux";
 import Login from "./component/Login";
 
 function App({_useSelector=useSelector, LoginC=Login}) {
-  const isLoggedIn = _useSelector(state => state.isLoggedIn)
+  const token = _useSelector(state => state.token)
 
-  if (!isLoggedIn)
+  if (!token)
     return <LoginC/>
   else
     return <>
