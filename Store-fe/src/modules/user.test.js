@@ -1,4 +1,4 @@
-import reducer, {LOGIN_FAILURE, LOGIN_START, LOGIN_SUCCESS, LOGOUT, UPDATE_CREDENTIALS} from "./user";
+import reducer, {initiateLogin, LOGIN_FAILURE, LOGIN_START, LOGIN_SUCCESS, LOGOUT, UPDATE_CREDENTIALS} from "./user";
 
 
 it('should start not logged in', () => {
@@ -48,4 +48,47 @@ it('should set isLoggedIn to false and credentials to blank when LOGOUT', () =>{
     const state = reducer(initialState, {type:LOGOUT})
     expect(state.isLoggedIn).toBe(false)
     expect(state.credentials).toStrictEqual({username:'', password:''})
+})
+
+it('should dispatch LOGIN_START then LOGIN_FAILURE when initiateLogin w/bad creds', async () =>{
+    const username = 'username'
+    const password = 'password'
+    const url =`http://localhost:8081/login?username=${username}&password=${password}`
+    let _url
+
+    const mockFetch = (url) =>{
+        _url=url
+        return new Promise(resolve => resolve({ok:false}))
+
+    }
+    const dispatch = jest.fn()
+    const state = {credentials:{username, password}}
+    const getState = () => state
+    const sideEffect = initiateLogin(mockFetch)
+    await sideEffect(dispatch, getState)
+    expect(_url).toBe(url)
+    expect(dispatch).toHaveBeenCalledWith({type:LOGIN_START})
+    expect(dispatch).toHaveBeenCalledWith({type:LOGIN_FAILURE})
+
+})
+it('should dispatch LOGIN_START then LOGIN_SUCCESS when initiateLogin w/good creds', async () =>{
+    const username = 'username'
+    const password = 'password'
+    const url =`http://localhost:8081/login?username=${username}&password=${password}`
+    let _url
+
+    const mockFetch = (url) =>{
+        _url=url
+        return new Promise(resolve => resolve({ok:true}))
+
+    }
+    const dispatch = jest.fn()
+    const state = {credentials:{username, password}}
+    const getState = () => state
+    const sideEffect = initiateLogin(mockFetch)
+    await sideEffect(dispatch, getState)
+    expect(_url).toBe(url)
+    expect(dispatch).toHaveBeenCalledWith({type:LOGIN_START})
+    expect(dispatch).toHaveBeenCalledWith({type:LOGIN_SUCCESS})
+
 })
