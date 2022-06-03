@@ -12,12 +12,11 @@ import java.util.UUID;
 
 public class ProductController {
     private ProductService productService;
-    //private AuthorizationService authorizationService;
 
     @GetMapping("/viewAllProducts")
     Iterable<ProductAccount> viewAllProducts (@RequestParam UUID requestingUserToken) {
        // authorizationService.isAuthorized(requestingUserToken);
-        return productService.viewAllProducts();
+        return productService.viewAllProducts(requestingUserToken);
 
     }
 

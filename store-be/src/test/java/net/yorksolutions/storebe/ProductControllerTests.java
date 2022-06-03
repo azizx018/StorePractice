@@ -1,6 +1,5 @@
 package net.yorksolutions.storebe;
 
-import org.checkerframework.checker.units.qual.UnknownUnits;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,7 +42,7 @@ public class ProductControllerTests {
         TestRestTemplate rest = new TestRestTemplate();
         final UUID requestingUserToken = UUID.randomUUID();
         String url = "http://localhost:" + port + "/viewAllProducts?requestingUserToken=" + requestingUserToken;
-        doThrow(new ResponseStatusException(HttpStatus.OK)).when(productService).viewAllProducts();
+        doThrow(new ResponseStatusException(HttpStatus.OK)).when(productService).viewAllProducts(requestingUserToken);
         final ResponseEntity<Void> response = rest.getForEntity(url, Void.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
