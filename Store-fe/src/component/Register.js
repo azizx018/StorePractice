@@ -11,6 +11,7 @@ export default function Register({_useSelector=useSelector, _useDispatch=useDisp
     function handleSubmit(event) {
         event.preventDefault()
         dispatch(initiateRegisterOwner())
+        event.target.reset()
     }
     function updateUsername(username) {
         dispatch({type:UPDATE_CREDENTIALS, payload:{...credentials, username}})
