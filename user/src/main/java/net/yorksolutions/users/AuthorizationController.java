@@ -42,6 +42,11 @@ public class AuthorizationController {
         service.logout(token);
     }
 
+    @GetMapping("/existingUserInDatabase")
+    public Boolean existingUserInDatabase() {
+        return service.isOwnerInDatabase();
+    }
+
 
 
 

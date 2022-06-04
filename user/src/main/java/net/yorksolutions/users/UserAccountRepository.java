@@ -15,4 +15,5 @@ public interface UserAccountRepository extends CrudRepository<UserAccount, Long>
 
     Optional<UserAccount> findByIdAndIsOwner(Long id, boolean isOwner);
 
+    Optional<UserAccount> findByIsOwner(boolean isOwner);
 }

@@ -47,6 +47,9 @@ public class AuthorizationService {
             tokenMap.remove(token);
         }
     }
+
+
+
     public void registerCustomer(String username, String password) {
         if (repository.findByUsername(username).isPresent())
             throw new ResponseStatusException(HttpStatus.CONFLICT);
@@ -71,9 +74,13 @@ public class AuthorizationService {
         }
         return -1L;
     }
+    public boolean isOwnerInDatabase() {
+        Optional<UserAccount> result = repository.findByIsOwner(true);
+        return result.isPresent();
+    }
 
-//    if (tokenMap.containsKey(token)) {
-//        Long id = tokenMap.get(token);
-//        mightBeUser = repository.findById(id);
-//    }
+
+
+
+
 }
