@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/")
 public class AuthorizationController {
 
@@ -23,16 +24,18 @@ public class AuthorizationController {
         service.isAuthorized(token);
     }
 
-    @CrossOrigin
+
     @GetMapping("/login")
     public UUID login(@RequestParam String username, @RequestParam String password) {
         return service.login(username,password);
     }
 
+
     @GetMapping("/registerOwner")
     public void registerOwner(@RequestParam String username, @RequestParam String password) {
         service.registerOwner(username, password);
     }
+    @CrossOrigin
     @GetMapping("/registerCustomer")
     public void registerCustomer(@RequestParam String username, @RequestParam String password) {
         service.registerCustomer(username, password);

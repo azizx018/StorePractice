@@ -1,5 +1,5 @@
 import {Button, Form} from "react-bootstrap";
-import {UPDATE_CREDENTIALS} from "../modules/user";
+import {initiateRegisterOwner, UPDATE_CREDENTIALS} from "../modules/user";
 import {useDispatch, useSelector} from "react-redux";
 
 
@@ -10,6 +10,7 @@ export default function Register({_useSelector=useSelector, _useDispatch=useDisp
 
     function handleSubmit(event) {
         event.preventDefault()
+        dispatch(initiateRegisterOwner())
     }
     function updateUsername(username) {
         dispatch({type:UPDATE_CREDENTIALS, payload:{...credentials, username}})

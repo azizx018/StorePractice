@@ -1,12 +1,17 @@
-import {Button, Form, FormControl} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
-import {initiateLogin, LOGIN_START, UPDATE_CREDENTIALS} from "../modules/user";
+import {initiateRegisterOwner, UPDATE_CREDENTIALS} from "../modules/user";
+import {Button, Form} from "react-bootstrap";
 
-export default function Login({_useSelector=useSelector, _useDispatch=useDispatch}) {
+
+export default function LandingPage({_useSelector=useSelector, _useDispatch=useDispatch}) {
     const dispatch = _useDispatch()
-    const loginPending = _useSelector(state=> state.loginPending)
+    const registerPending = _useSelector(state => state.registerPending)
     const credentials= _useSelector(state => state.credentials)
 
+    function handleSubmit(event) {
+        event.preventDefault()
+        dispatch(initiateRegisterOwner())
+    }
     function updateUsername(username) {
         dispatch({type:UPDATE_CREDENTIALS, payload:{...credentials, username}})
 
@@ -16,21 +21,14 @@ export default function Login({_useSelector=useSelector, _useDispatch=useDispatc
 
     }
 
-    function handleSubmit(event) {
-        event.preventDefault()
-        dispatch(initiateLogin())
-
-    }
-
-    return<>
-
+    return <>
+        <h3>Welcome! Let's setup your account!</h3>
         <Form onSubmit={handleSubmit}>
             <Form.Control placeholder={'Username'} onChange={e => updateUsername(e.target.value)}></Form.Control>
             <Form.Control placeholder={'Password'} onChange={e => updatePassword(e.target.value)}></Form.Control>
 
-            <Button type={'submit'} disabled={loginPending}>Login</Button>
+            <Button type={'submit'} disabled={registerPending}>Register</Button>
 
         </Form>
-
     </>
 }
