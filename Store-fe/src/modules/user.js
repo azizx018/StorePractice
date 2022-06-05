@@ -7,6 +7,8 @@ export const LOGOUT ='store/user/LOGOUT'
 export const REGISTER_START = 'store/user/REGISTER_START'
 export const REGISTER_FAILURE = 'store/user/REGISTER_FAILURE'
 export const REGISTER_SUCCESS = 'store/user/REGISTER_SUCCESS'
+
+
 //reducer
 
 //initial state
@@ -17,7 +19,7 @@ const initialState= {
     loginPending:false,
     registerPending:false,
     credentials:{username:'', password:''},
-    failureMessage:null
+    failureMessage:null,
 
 }
 
@@ -66,9 +68,8 @@ export default function reducer(state=initialState, action) {
             return {
                 ...state,
                 registerPending: false,
-
-
             }
+
         default:
             return{...state}
     }
@@ -80,7 +81,7 @@ export default function reducer(state=initialState, action) {
 export function initiateLogin(_fetch=fetch) {
     return async function sideEffect(dispatch, getState) {
         dispatch({type:LOGIN_START})
-        const {username,password} = getState().credentials
+        const {username,password} = getState().user.credentials
         const url =`http://localhost:8081/login?username=${username}&password=${password}`
         const response = await _fetch(url)
 
@@ -117,6 +118,7 @@ export function initiateRegisterOwner(_fetch=fetch) {
     }
 
 }
+
 // export function firstOwner(_fetch=fetch) {
 //     return async function sideEffect(dispatch, getState) {
 //         dispatch({type:REGISTER_START})

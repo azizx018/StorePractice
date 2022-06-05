@@ -1,4 +1,12 @@
-import reducer, {initiateLogin, LOGIN_FAILURE, LOGIN_START, LOGIN_SUCCESS, LOGOUT, UPDATE_CREDENTIALS} from "./user";
+import reducer, {
+    initiateLogin,
+    LOGIN_FAILURE,
+    LOGIN_START,
+    LOGIN_SUCCESS,
+    LOGOUT,
+    UPDATE_CREDENTIALS,
+    VIEW_PRODUCTS
+} from "./user";
 
 it('should start with a null token', () =>{
     const state = reducer()
@@ -105,4 +113,11 @@ it('should dispatch LOGIN_START then LOGIN_SUCCESS when initiateLogin w/good cre
     expect(dispatch).toHaveBeenCalledWith({type:LOGIN_START})
     expect(dispatch).toHaveBeenCalledWith({type:LOGIN_SUCCESS, payload:token})
 
+})
+
+it('should display products', () => {
+    const initialState = reducer()
+    const payload = {productName:'Shoes'}
+    const state = reducer(initialState, {type:VIEW_PRODUCTS, payload:payload})
+    expect(state.productList).toStrictEqual(payload)
 })
