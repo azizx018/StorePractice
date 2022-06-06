@@ -75,8 +75,11 @@ public class AuthorizationService {
         return -1L;
     }
     public boolean isOwnerInDatabase() {
-        Optional<UserAccount> result = repository.findByIsOwner(true);
-        return result.isPresent();
+        Iterable<UserAccount> result = repository.findByIsOwner(true);
+        for (var user: result) {
+            return true;
+        }
+        return false;
     }
 
 

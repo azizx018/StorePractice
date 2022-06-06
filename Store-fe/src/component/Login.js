@@ -4,8 +4,8 @@ import {initiateLogin, LOGIN_START, UPDATE_CREDENTIALS} from "../modules/user";
 
 export default function Login({_useSelector=useSelector, _useDispatch=useDispatch}) {
     const dispatch = _useDispatch()
-    const loginPending = _useSelector(state=> state.loginPending)
-    const credentials= _useSelector(state => state.credentials)
+    const loginPending = _useSelector(state=> state.user.loginPending)
+    const credentials= _useSelector(state => state.user.credentials)
 
     function updateUsername(username) {
         dispatch({type:UPDATE_CREDENTIALS, payload:{...credentials, username}})

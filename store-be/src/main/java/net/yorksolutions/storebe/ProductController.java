@@ -1,21 +1,27 @@
 package net.yorksolutions.storebe;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/")
 
 public class ProductController {
     private ProductService productService;
 
+    @Autowired
+    public ProductController(@NonNull ProductService productService) {
+        this.productService = productService;
+    }
+
+
     @GetMapping("/viewAllProducts")
-    Iterable<ProductAccount> viewAllProducts (@RequestParam UUID requestingUserToken) {
-        return productService.viewAllProducts(requestingUserToken);
+    Iterable<ProductAccount> viewAllProducts (@RequestParam UUID token) {
+        return productService.viewAllProducts(token);
 
     }
 

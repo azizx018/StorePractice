@@ -43,11 +43,11 @@ public class ProductControllerTests {
     @Test
     void itShouldRespondOkWhenLoggedinUserRequestsViewAllProducts() {
         TestRestTemplate rest = new TestRestTemplate();
-        final UUID requestingUserToken = UUID.randomUUID();
-        String url = "http://localhost:" + port + "/viewAllProducts?requestingUserToken=" + requestingUserToken;
+        final UUID token = UUID.randomUUID();
+        String url = "http://localhost:" + port + "/viewAllProducts?token=" + token;
         ProductAccount [] expected = new ProductAccount []{};
-        //doThrow(new ResponseStatusException(HttpStatus.OK)).when(productService).viewAllProducts(requestingUserToken);
-        when(productService.viewAllProducts(requestingUserToken)).thenReturn(List.of(expected));
+        //doThrow(new ResponseStatusException(HttpStatus.OK)).when(productService).viewAllProducts(token);
+        when(productService.viewAllProducts(token)).thenReturn(List.of(expected));
         final ResponseEntity<ProductAccount[]> response = rest.getForEntity(url, ProductAccount[].class);
         //final ResponseEntity<Void> response = rest.getForEntity(url, Void.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());

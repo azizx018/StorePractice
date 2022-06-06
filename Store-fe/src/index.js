@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {applyMiddleware, compose, createStore} from "redux";
+import {applyMiddleware, combineReducers, compose, createStore} from "redux";
 import user from './modules/user'
+import product from './modules/product'
 import {Provider} from "react-redux";
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -16,7 +17,9 @@ const handleAsync = storeAPI => next => action =>{
 }
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(user, composeEnhancers(applyMiddleware(handleAsync)))
+const store = createStore(
+    combineReducers({user, product}),
+    composeEnhancers(applyMiddleware(handleAsync)))
 
 
 

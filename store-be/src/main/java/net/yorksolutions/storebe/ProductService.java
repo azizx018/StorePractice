@@ -15,14 +15,14 @@ public class ProductService {
 
     private final RestTemplate rest;
 
-    @Autowired
     public ProductService() {
         rest = new RestTemplate();
     }
 
 
-    public ProductService(RestTemplate rest, @NonNull ProductAccountRepository repository) {
-        this.rest = rest;
+    @Autowired
+    public ProductService(@NonNull ProductAccountRepository repository) {
+        this.rest = new RestTemplate();
         this.repository = repository;
     }
     private ProductAccountRepository repository;

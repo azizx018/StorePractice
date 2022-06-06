@@ -35,7 +35,7 @@ public class AuthorizationController {
     public void registerOwner(@RequestParam String username, @RequestParam String password) {
         service.registerOwner(username, password);
     }
-    @CrossOrigin
+
     @GetMapping("/registerCustomer")
     public void registerCustomer(@RequestParam String username, @RequestParam String password) {
         service.registerCustomer(username, password);
@@ -45,7 +45,7 @@ public class AuthorizationController {
         service.logout(token);
     }
 
-    @GetMapping("/existingUserInDatabase")
+    @GetMapping("/existingOwnerInDatabase")
     public Boolean existingUserInDatabase() {
         return service.isOwnerInDatabase();
     }
